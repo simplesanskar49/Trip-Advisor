@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Trip Architect",
+    "slug": "trip-architect",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "triparchitect",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.tripsanskar.architect" },
+    "android": { "package": "com.tripsanskar.architect" },
+    "web": { "bundler": "metro", "output": "single" },
+    "plugins": ["expo-router", "expo-font"],
+    "experiments": { "typedRoutes": true },
+    "extra": {
+      "apiUrl": "http://localhost:8787"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+name = "trip-architect-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Secrets (set via `wrangler secret put`):
+#   GEMINI_API_KEY
+#   SUPABASE_URL
+#   SUPABASE_ANON_KEY
+#   UNSPLASH_ACCESS_KEY
+
+[vars]
+ENVIRONMENT = "development"
