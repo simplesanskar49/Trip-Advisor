@@ -1,19 +1,43 @@
 {
   "expo": {
-    "name": "Trip Architect",
-    "slug": "trip-architect",
+    "name": "Trip Advisor",
+    "slug": "trip-advisor",
     "version": "0.1.0",
     "orientation": "portrait",
     "scheme": "triparchitect",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": { "supportsTablet": true, "bundleIdentifier": "com.tripsanskar.architect" },
-    "android": { "package": "com.tripsanskar.architect" },
-    "web": { "bundler": "metro", "output": "single" },
-    "plugins": ["expo-router", "expo-font"],
-    "experiments": { "typedRoutes": true },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tripsanskar.architect"
+    },
+    "android": {
+      "package": "com.tripsanskar.architect"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
-      "apiUrl": "http://localhost:8787"
+      "apiUrl": "https://api.trip-advisor.workers.dev",
+      "router": {},
+      "eas": {
+        "projectId": "0417a790-69fe-4df3-9148-a927fa9cd288"
+      }
+    },
+    "owner": "simplesanskar49",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0417a790-69fe-4df3-9148-a927fa9cd288"
     }
   }
 }
