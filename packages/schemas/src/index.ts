@@ -47,6 +47,12 @@ export const GenerateItineraryRequestSchema = z.object({
 });
 export type GenerateItineraryRequest = z.infer<typeof GenerateItineraryRequestSchema>;
 
+export const RefineItineraryRequestSchema = z.object({
+  itinerary: ItinerarySchema,
+  instruction: z.string().min(1).max(500),
+});
+export type RefineItineraryRequest = z.infer<typeof RefineItineraryRequestSchema>;
+
 export const RecommendationSchema = z.object({
   destination: z.string(),
   country: z.string(),
