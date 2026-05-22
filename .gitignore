@@ -9,17 +9,25 @@ build/
 .expo-shared/
 web-build/
 .wrangler/
+.eas/
 
-# env
+# env / secrets
 .env
-.env.local
+.env.*
 .dev.vars
+.dev.vars.*
 *.local
+.npmrc.local
 
 # native
 ios/
 android/
 *.orig.*
+*.apk
+*.aab
+*.ipa
+*.keystore
+*.jks
 
 # logs
 *.log
@@ -27,10 +35,11 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
-# editor
+# editor / OS
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
 
 # typescript
 *.tsbuildinfo
