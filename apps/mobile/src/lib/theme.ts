@@ -1,21 +1,38 @@
-export const colors = {
-  bg: '#FAF7F2',
-  bgDark: '#0F0E0C',
-  surface: '#FFFFFF',
-  surfaceDark: '#1A1815',
-  ink: '#1A1A1A',
-  inkDark: '#F5F1EA',
-  muted: '#6B6660',
-  mutedDark: '#9A938A',
-  border: '#E8E2D8',
-  borderDark: '#2A2622',
-  accent: '#C2410C',
-  accentSoft: '#FFEDD5',
-  teal: '#0F766E',
-  tealSoft: '#CCFBF1',
-  success: '#15803D',
-  danger: '#B91C1C',
-} as const;
+import tokens from './tokens.js';
 
-export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, '2xl': 24, '3xl': 32 } as const;
-export const radius = { sm: 8, md: 12, lg: 16, xl: 20, full: 9999 } as const;
+export const colors = tokens.colors as Readonly<{
+  white: string;
+  black: string;
+  bg: string;
+  bgDark: string;
+  surface: string;
+  surfaceDark: string;
+  ink: string;
+  inkDark: string;
+  muted: string;
+  mutedDark: string;
+  placeholder: string;
+  border: string;
+  borderDark: string;
+  skeleton: string;
+  accent: string;
+  accentSoft: string;
+  tagNeutralBg: string;
+  teal: string;
+  tealSoft: string;
+  success: string;
+  danger: string;
+}>;
+
+export const spacing = tokens.spacing as Readonly<Record<string, number>>;
+export const radius = tokens.radius as Readonly<Record<string, number>>;
+
+/**
+ * Serif (Fraunces) text style with safe line-height so descenders (g, y, p)
+ * are never clipped on Android. Always prefer this over inline fontFamily.
+ */
+export const serifText = (fontSize: number) => ({
+  fontFamily: 'Fraunces_500Medium' as const,
+  fontSize,
+  lineHeight: Math.round(fontSize * 1.3),
+});
