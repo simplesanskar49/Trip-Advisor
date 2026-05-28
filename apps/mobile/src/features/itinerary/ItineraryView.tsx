@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import type { Itinerary, DayPlan, ActivityBlock } from '@trip/schemas';
 import { Tag } from '@/components/Tag';
 import { colors, serifText } from '@/lib/theme';
+import type { ActivityBlock, DayPlan, Itinerary } from '@trip/schemas';
+import { Text, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const timeLabels: Record<ActivityBlock['timeOfDay'], string> = {
   morning: 'Morning',
@@ -12,22 +12,48 @@ const timeLabels: Record<ActivityBlock['timeOfDay'], string> = {
 
 function Block({ block, last, delay }: { block: ActivityBlock; last: boolean; delay: number }) {
   return (
-    <Animated.View entering={FadeInDown.duration(450).delay(delay).springify().damping(18)} style={{ flexDirection: 'row' }}>
+    <Animated.View
+      entering={FadeInDown.duration(450).delay(delay).springify().damping(18)}
+      style={{ flexDirection: 'row' }}
+    >
       <View className="items-center" style={{ width: 28 }}>
-        <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: colors.accent, marginTop: 6 }} />
-        {!last && <View style={{ flex: 1, width: 2, backgroundColor: colors.accentSoft, marginTop: 4 }} />}
+        <View
+          style={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: colors.accent,
+            marginTop: 6,
+          }}
+        />
+        {!last && (
+          <View style={{ flex: 1, width: 2, backgroundColor: colors.accentSoft, marginTop: 4 }} />
+        )}
       </View>
       <View className="flex-1 pb-6">
-        <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 11, color: colors.accent, letterSpacing: 1 }}>
+        <Text
+          style={{
+            fontFamily: 'Inter_500Medium',
+            fontSize: 11,
+            color: colors.accent,
+            letterSpacing: 1,
+          }}
+        >
           {timeLabels[block.timeOfDay].toUpperCase()}
         </Text>
         <Text className="text-ink mt-1" style={serifText(18)}>
           {block.title}
         </Text>
-        <Text className="text-muted mt-0.5" style={{ fontFamily: 'Inter_400Regular', fontSize: 13 }}>
+        <Text
+          className="text-muted mt-0.5"
+          style={{ fontFamily: 'Inter_400Regular', fontSize: 13 }}
+        >
           {block.place}
         </Text>
-        <Text className="text-ink mt-2 leading-5" style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+        <Text
+          className="text-ink mt-2 leading-5"
+          style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}
+        >
           {block.description}
         </Text>
         {(block.estimatedCost || block.durationMinutes) && (

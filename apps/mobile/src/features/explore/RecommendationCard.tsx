@@ -1,11 +1,11 @@
-import { TouchableOpacity, View, Text } from 'react-native';
-import { Image } from 'expo-image';
-import type { Recommendation } from '@trip/schemas';
 import { Tag } from '@/components/Tag';
 import { coverImageFor } from '@/lib/coverImage';
 import { colors, serifText } from '@/lib/theme';
+import type { Recommendation } from '@trip/schemas';
+import { Image } from 'expo-image';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-type RecommendationCardProps ={ rec: Recommendation; onPress: () => void; loading?: boolean };
+type RecommendationCardProps = { rec: Recommendation; onPress: () => void; loading?: boolean };
 
 export function RecommendationCard({ rec, onPress, loading }: RecommendationCardProps) {
   return (
@@ -22,13 +22,19 @@ export function RecommendationCard({ rec, onPress, loading }: RecommendationCard
         transition={300}
       />
       <View className="p-4">
-        <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}>
+        <Text
+          className="text-muted"
+          style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}
+        >
           {rec.country.toUpperCase()}
         </Text>
         <Text className="text-ink mt-1" style={serifText(22)}>
           {rec.destination}
         </Text>
-        <Text className="text-ink mt-2 leading-5" style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+        <Text
+          className="text-ink mt-2 leading-5"
+          style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}
+        >
           {rec.blurb}
         </Text>
         <View className="flex-row flex-wrap gap-2 mt-3">
@@ -36,11 +42,11 @@ export function RecommendationCard({ rec, onPress, loading }: RecommendationCard
             <Tag key={t} label={t} tone="teal" />
           ))}
         </View>
-        <View
-          className="mt-4 pt-3"
-          style={{ borderTopWidth: 1, borderTopColor: colors.border }}
-        >
-          <Text className="text-muted" style={{ fontFamily: 'Inter_400Regular', fontSize: 12, fontStyle: 'italic' }}>
+        <View className="mt-4 pt-3" style={{ borderTopWidth: 1, borderTopColor: colors.border }}>
+          <Text
+            className="text-muted"
+            style={{ fontFamily: 'Inter_400Regular', fontSize: 12, fontStyle: 'italic' }}
+          >
             {rec.reason}
           </Text>
         </View>

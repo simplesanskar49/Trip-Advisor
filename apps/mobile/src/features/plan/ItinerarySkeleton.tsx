@@ -1,5 +1,5 @@
-import { View } from 'react-native';
 import { Skeleton } from '@/components/Skeleton';
+import { View } from 'react-native';
 
 export function ItinerarySkeleton() {
   return (

@@ -1,5 +1,7 @@
 # Trip Advisor
 
+[![CI](https://github.com/simplesanskar49/August-AI-Assignment/actions/workflows/ci.yml/badge.svg)](https://github.com/simplesanskar49/August-AI-Assignment/actions/workflows/ci.yml)
+
 AI-powered travel itinerary planner. Generate, refine, and explore trips with Gemini on a Cloudflare-backed Expo app.
 
 ## Try it
@@ -11,11 +13,17 @@ iOS isn't distributed (Apple requires a paid developer account). To run on iOS, 
 
 ## What it does
 
-Three tabs that share one loop:
+Four tabs that share one loop:
 
 - **Plan** — describe a destination, days, and vibe → a structured day-by-day itinerary with morning/afternoon/evening blocks, real venues, costs, durations. Refine inline ("make day 2 more relaxed") before saving.
 - **Trips** — your saved itineraries. Tap to see the full plan, refine further, share, or delete.
-- **Explore** — AI-curated destination recommendations seeded by your saved trips. Tap a card to draft a 4-day itinerary in place.
+- **Map** — interactive world map (Leaflet inside a WebView, OpenStreetMap tiles) with a pin per saved trip. Pins are placed via on-device geocoding through Nominatim with a backfill pass for older trips. Tap a pin to open its itinerary.
+- **Explore** — AI-curated destination recommendations seeded by your saved trips.
+
+### Highlights
+
+- **Share as a poster, not a wall of text.** Tapping the share icon on a trip renders an offscreen 1080×1920 card (cover image, destination in Fraunces serif, day count, top highlights) via `react-native-view-shot`, captures it as a PNG, and hands it to the native share sheet through `expo-sharing`. Recipients get an actual image on WhatsApp, iMessage, Instagram Stories — instead of the plaintext dump RN's built-in `Share` would produce.
+- **Offline-first map with zero native modules.** `react-native-maps` requires a custom dev build (it isn't in Expo Go from SDK 53+), so the Map tab uses Leaflet inside a WebView instead. Same UX (pan, zoom, custom pins, popups → deep-link to the trip detail) with no native build step, and the choice is documented so it can be swapped to a native renderer later.
 
 ## Stack
 
@@ -23,6 +31,9 @@ Three tabs that share one loop:
 | --- | --- |
 | Mobile | Expo SDK 54, Expo Router |
 | UI | NativeWind v4 (Tailwind), Reanimated 4 |
+| Maps | Leaflet via `react-native-webview`, OpenStreetMap tiles, Nominatim geocoding |
+| Sharing | `react-native-view-shot` (offscreen capture) + `expo-sharing` (native share sheet) |
+| Haptics | `expo-haptics` |
 | Server state | TanStack Query |
 | Client state | Zustand + AsyncStorage |
 | API | Cloudflare Workers + Hono |
@@ -35,7 +46,7 @@ Three tabs that share one loop:
 
 ```
 ┌───────────────────────────────────┐
-│ Expo app (Plan / Trips / Explore) │
+│ Expo app (Plan / Trips / Map / Explore) │
 │  TanStack Query · Zustand         │
 └──────────────┬────────────────────┘
                │ HTTPS (zod-validated)
@@ -60,14 +71,15 @@ The Gemini API key lives only as a Cloudflare Worker secret. The mobile bundle n
 apps/
   mobile/    Expo app
     app/                            Expo Router screens
-      (tabs)/{plan,trips,explore}.tsx
+      (tabs)/{plan,trips,map,explore}.tsx
       trip/[id].tsx
     src/
       components/                   Card, Button, IconButton, Heading, Tag, Skeleton
       features/
         itinerary/                  ItineraryView, ItineraryResultCard
         plan/                       PromptForm, ItinerarySkeleton
-        trips/                      TripCard, RefineBar
+        trips/                      TripCard, RefineBar, ShareCard
+        ../lib/geocode.ts             Nominatim geocoder w/ in-memory cache
         explore/                    RecommendationCard
       lib/                          api, theme, storage, coverImage, friendlyError
       store/                        tripsStore (zustand + AsyncStorage)
@@ -130,6 +142,10 @@ eas update --branch preview --message "..."
 - **Schema-first:** every LLM response is constrained by Gemini's `responseSchema` and re-validated client-side. Invalid JSON is structurally impossible.
 - **Friendly errors:** all backend/network/LLM failures map to short user-facing messages via `friendlyError()`. Internal details stay in worker logs.
 - **Resilience:** Gemini calls retry up to 3× on transient 503/429 errors with exponential backoff.
+
+## Known limitations
+
+- **Map tiles use OpenStreetMap**, which renders the *international* interpretation of disputed borders (e.g. Kashmir). For an India-targeted product the right swap is Mappls (MapMyIndia) tiles or Mapbox with `locale=IN` — both gated behind an API key, so left out of this portfolio build.
 
 ## What's intentionally not here
 

@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, View, Text, RefreshControl, Alert, BackHandler } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import type { Itinerary, Recommendation } from '@trip/schemas';
-import { Heading } from '@/components/Heading';
-import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
+import { Card } from '@/components/Card';
+import { Heading } from '@/components/Heading';
 import { IconButton } from '@/components/IconButton';
 import { Skeleton } from '@/components/Skeleton';
-import { useTripsStore } from '@/store/tripsStore';
+import { SwipeDeck } from '@/features/explore/SwipeDeck';
+import { ItineraryResultCard } from '@/features/itinerary/ItineraryResultCard';
+import { ItinerarySkeleton } from '@/features/plan/ItinerarySkeleton';
 import { generateItinerary, getRecommendations, refineItinerary } from '@/lib/api';
 import { coverImageFor } from '@/lib/coverImage';
-import { friendlyError } from '@/lib/friendlyError';
-import { serifText } from '@/lib/theme';
-import { RecommendationCard } from '@/features/explore/RecommendationCard';
-import { ItinerarySkeleton } from '@/features/plan/ItinerarySkeleton';
-import { ItineraryResultCard } from '@/features/itinerary/ItineraryResultCard';
+import { colors, serifText } from '@/lib/theme';
+import { useTripsStore } from '@/store/tripsStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { Itinerary, Recommendation } from '@trip/schemas';
+import { friendlyError } from '@trip/ui-core';
+import { router } from 'expo-router';
+import { useEffect, useMemo, useState } from 'react';
+import { Alert, BackHandler, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type PreviewState =
   | { mode: 'list' }
@@ -27,6 +27,10 @@ export default function ExploreScreen() {
   const trips = useTripsStore((s) => s.trips);
   const addTrip = useTripsStore((s) => s.addTrip);
   const [state, setState] = useState<PreviewState>({ mode: 'list' });
+  const [liked, setLiked] = useState<Recommendation[]>([]);
+  const [showLiked, setShowLiked] = useState(false);
+
+  const recKey = (r: Recommendation) => `${r.destination}-${r.country}`;
 
   const seeds = useMemo(() => trips.map((t) => t.destination), [trips]);
 
@@ -100,7 +104,10 @@ export default function ExploreScreen() {
               <IconButton name="chevron-back" variant="subtle" onPress={handleBackToList} />
             </View>
             <View className="flex-1">
-              <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}>
+              <Text
+                className="text-muted"
+                style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}
+              >
                 DRAFTING
               </Text>
               <Heading size="lg" className="mt-0.5">
@@ -129,50 +136,75 @@ export default function ExploreScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
-      <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20, paddingTop: 8 }}
-        refreshControl={<RefreshControl refreshing={recsQuery.isFetching} onRefresh={() => recsQuery.refetch()} />}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="mb-5">
-          <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}>
+      <View className="px-5 pt-2 pb-3 flex-row justify-between items-end">
+        <View>
+          <Text
+            className="text-muted"
+            style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}
+          >
             FOR YOU
           </Text>
-          <Heading className="mt-1">Explore</Heading>
-          <Text className="text-muted mt-2 leading-5" style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
-            {seeds.length > 0
-              ? `Based on your ${seeds.length} saved ${seeds.length === 1 ? 'trip' : 'trips'}.`
-              : 'Curated picks to get you started.'}
-          </Text>
+          <Heading className="mt-1">Discover</Heading>
         </View>
+        <View className="flex-row items-center gap-3">
+          {liked.length > 0 && (
+            <Pressable
+              onPress={() => setShowLiked(true)}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 6,
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 999,
+                backgroundColor: colors.success,
+              }}
+            >
+              <Ionicons name="bookmark" size={14} color={colors.white} />
+              <Text style={{ color: colors.white, fontFamily: 'Inter_600SemiBold', fontSize: 13 }}>
+                {liked.length}
+              </Text>
+            </Pressable>
+          )}
+          <Pressable onPress={() => recsQuery.refetch({ cancelRefetch: true })} hitSlop={10}>
+            <Ionicons
+              name="refresh"
+              size={22}
+              color={recsQuery.isFetching ? colors.muted : colors.ink}
+            />
+          </Pressable>
+        </View>
+      </View>
 
-        {recsQuery.isLoading && (
-          <View>
-            {[0, 1, 2].map((i) => (
-              <Card key={i} padded={false} className="mb-4 overflow-hidden">
-                <Skeleton width="100%" height={150} rounded={0} />
-                <View className="p-4">
-                  <Skeleton width={80} height={10} />
-                  <View style={{ height: 8 }} />
-                  <Skeleton width="60%" height={20} />
-                  <View style={{ height: 10 }} />
-                  <Skeleton width="100%" height={12} />
-                  <View style={{ height: 4 }} />
-                  <Skeleton width="85%" height={12} />
-                </View>
-              </Card>
-            ))}
-          </View>
-        )}
+      {recsQuery.isLoading && (
+        <View className="flex-1 px-5">
+          <Card padded={false} className="overflow-hidden">
+            <Skeleton width="100%" height={280} rounded={0} />
+            <View className="p-5">
+              <Skeleton width={80} height={10} />
+              <View style={{ height: 10 }} />
+              <Skeleton width="60%" height={22} />
+              <View style={{ height: 12 }} />
+              <Skeleton width="100%" height={12} />
+              <View style={{ height: 4 }} />
+              <Skeleton width="85%" height={12} />
+            </View>
+          </Card>
+        </View>
+      )}
 
-        {recsQuery.isError && (
+      {recsQuery.isError && (
+        <View className="flex-1 px-5 justify-center">
           <Card>
             <View className="items-center py-4">
-              <Ionicons name="cloud-offline-outline" size={32} color="#B91C1C" />
+              <Ionicons name="cloud-offline-outline" size={32} color={colors.danger} />
               <Text className="text-ink mt-2" style={serifText(18)}>
                 Couldn't load recommendations
               </Text>
-              <Text className="text-muted mt-1 text-center" style={{ fontFamily: 'Inter_400Regular', fontSize: 13 }}>
+              <Text
+                className="text-muted mt-1 text-center"
+                style={{ fontFamily: 'Inter_400Regular', fontSize: 13 }}
+              >
                 {friendlyError(recsQuery.error)}
               </Text>
               <View className="mt-4 w-full">
@@ -180,16 +212,96 @@ export default function ExploreScreen() {
               </View>
             </View>
           </Card>
-        )}
+        </View>
+      )}
 
-        {recsQuery.data?.recommendations.map((rec) => (
-          <RecommendationCard
-            key={`${rec.destination}-${rec.country}`}
-            rec={rec}
-            onPress={() => handleStartPreview(rec)}
-          />
-        ))}
-      </ScrollView>
+      {recsQuery.data && (
+        <SwipeDeck
+          items={recsQuery.data.recommendations}
+          onLike={(rec) =>
+            setLiked((prev) =>
+              prev.some((r) => recKey(r) === recKey(rec)) ? prev : [...prev, rec],
+            )
+          }
+          onSkip={() => {}}
+          onEmpty={() => {
+            if (liked.length > 0) setShowLiked(true);
+            else recsQuery.refetch();
+          }}
+        />
+      )}
+
+      <Modal
+        visible={showLiked}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setShowLiked(false)}
+      >
+        <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
+          <View className="flex-row items-center justify-between px-5 pt-2 pb-3">
+            <View>
+              <Text
+                className="text-muted"
+                style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}
+              >
+                YOUR PICKS
+              </Text>
+              <Heading className="mt-1">Saved ({liked.length})</Heading>
+            </View>
+            <Pressable onPress={() => setShowLiked(false)} hitSlop={10}>
+              <Ionicons name="close" size={26} color={colors.ink} />
+            </Pressable>
+          </View>
+          <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 24 }}>
+            {liked.length === 0 ? (
+              <Text className="text-muted mt-8 text-center" style={serifText(18)}>
+                Nothing saved yet.
+              </Text>
+            ) : (
+              liked.map((rec) => (
+                <Pressable
+                  key={recKey(rec)}
+                  onPress={() => {
+                    setShowLiked(false);
+                    handleStartPreview(rec);
+                  }}
+                  className="mb-3 p-4 rounded-2xl"
+                  style={{
+                    backgroundColor: colors.surface,
+                    borderWidth: 1,
+                    borderColor: colors.border,
+                  }}
+                >
+                  <View className="flex-row items-center justify-between">
+                    <View className="flex-1 pr-3">
+                      <Text
+                        className="text-muted"
+                        style={{ fontFamily: 'Inter_500Medium', fontSize: 10, letterSpacing: 1.5 }}
+                      >
+                        {rec.country.toUpperCase()}
+                      </Text>
+                      <Text className="text-ink mt-1" style={serifText(18)}>
+                        {rec.destination}
+                      </Text>
+                    </View>
+                    <View className="flex-row items-center gap-2">
+                      <Pressable
+                        hitSlop={8}
+                        onPress={() =>
+                          setLiked((prev) => prev.filter((r) => recKey(r) !== recKey(rec)))
+                        }
+                      >
+                        <Ionicons name="trash-outline" size={20} color={colors.muted} />
+                      </Pressable>
+                      <Ionicons name="chevron-forward" size={20} color={colors.ink} />
+                    </View>
+                  </View>
+                </Pressable>
+              ))
+            )}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 }

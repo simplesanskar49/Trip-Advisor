@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
-import { generateRecommendations, GeminiError } from '../services/gemini';
 import { rateLimit } from '../middleware/rateLimit';
+import { GeminiError, generateRecommendations } from '../services/gemini';
 import type { Bindings } from '../types';
 
 const RequestSchema = z.object({
@@ -24,13 +24,19 @@ exploreRoutes.post('/recommendations', async (c) => {
   }
 
   try {
-    const result = await generateRecommendations(c.env.GEMINI_API_KEY, parsed.data.seedDestinations);
+    const result = await generateRecommendations(
+      c.env.GEMINI_API_KEY,
+      parsed.data.seedDestinations,
+    );
     return c.json(result);
   } catch (err) {
     console.error('Explore route error:', err);
     if (err instanceof GeminiError) {
       const cause = err.cause as { message?: string } | undefined;
-      return c.json({ error: 'generation_failed', message: err.message, cause: cause?.message }, 502);
+      return c.json(
+        { error: 'generation_failed', message: err.message, cause: cause?.message },
+        502,
+      );
     }
     return c.json({ error: 'internal_error', message: String(err) }, 500);
   }

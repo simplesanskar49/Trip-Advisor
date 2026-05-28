@@ -1,9 +1,9 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import {
-  ItinerarySchema,
-  RecommendationsResponseSchema,
   type Itinerary,
+  ItinerarySchema,
   type RecommendationsResponse,
+  RecommendationsResponseSchema,
 } from '@trip/schemas';
 
 const MODEL = 'gemini-flash-latest';
@@ -81,7 +81,10 @@ const recommendationsResponseSchema = {
 };
 
 export class GeminiError extends Error {
-  constructor(message: string, public readonly cause?: unknown) {
+  constructor(
+    message: string,
+    public readonly cause?: unknown,
+  ) {
     super(message);
     this.name = 'GeminiError';
   }

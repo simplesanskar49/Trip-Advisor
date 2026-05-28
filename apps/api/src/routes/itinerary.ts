@@ -1,7 +1,7 @@
-import { Hono } from 'hono';
 import { GenerateItineraryRequestSchema, RefineItineraryRequestSchema } from '@trip/schemas';
-import { generateItinerary, refineItinerary, GeminiError } from '../services/gemini';
+import { Hono } from 'hono';
 import { rateLimit } from '../middleware/rateLimit';
+import { GeminiError, generateItinerary, refineItinerary } from '../services/gemini';
 import type { Bindings } from '../types';
 
 export const itineraryRoutes = new Hono<{ Bindings: Bindings }>();
@@ -26,7 +26,10 @@ itineraryRoutes.post('/generate', async (c) => {
     console.error('Itinerary route error:', err);
     if (err instanceof GeminiError) {
       const cause = err.cause as { message?: string } | undefined;
-      return c.json({ error: 'generation_failed', message: err.message, cause: cause?.message }, 502);
+      return c.json(
+        { error: 'generation_failed', message: err.message, cause: cause?.message },
+        502,
+      );
     }
     return c.json({ error: 'internal_error', message: String(err) }, 500);
   }
@@ -48,7 +51,10 @@ itineraryRoutes.post('/refine', async (c) => {
     console.error('Itinerary route error:', err);
     if (err instanceof GeminiError) {
       const cause = err.cause as { message?: string } | undefined;
-      return c.json({ error: 'generation_failed', message: err.message, cause: cause?.message }, 502);
+      return c.json(
+        { error: 'generation_failed', message: err.message, cause: cause?.message },
+        502,
+      );
     }
     return c.json({ error: 'internal_error', message: String(err) }, 500);
   }

@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { View, TextInput, Pressable, Text, ActivityIndicator, Keyboard } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { ActivityIndicator, Keyboard, Pressable, Text, TextInput, View } from 'react-native';
 
-type RefineBarProps ={
+type RefineBarProps = {
   loading: boolean;
   onSubmit: (instruction: string) => void;
 };
@@ -69,7 +69,9 @@ export function RefineBar({ loading, onSubmit }: RefineBarProps) {
             className="px-3 py-1.5 rounded-full"
             style={{ backgroundColor: colors.accentSoft }}
           >
-            <Text style={{ color: colors.accent, fontFamily: 'Inter_500Medium', fontSize: 12 }}>{s}</Text>
+            <Text style={{ color: colors.accent, fontFamily: 'Inter_500Medium', fontSize: 12 }}>
+              {s}
+            </Text>
           </Pressable>
         ))}
       </View>

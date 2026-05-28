@@ -18,11 +18,9 @@ export function rateLimit(opts: { max: number; windowMs: number }): MiddlewareHa
       bucket.count += 1;
       if (bucket.count > opts.max) {
         const retryAfter = Math.ceil((bucket.resetAt - now) / 1000);
-        return c.json(
-          { error: 'rate_limited', retryAfter },
-          429,
-          { 'Retry-After': String(retryAfter) },
-        );
+        return c.json({ error: 'rate_limited', retryAfter }, 429, {
+          'Retry-After': String(retryAfter),
+        });
       }
     }
     await next();

@@ -1,9 +1,9 @@
-import { Pressable, Text, ActivityIndicator, type PressableProps } from 'react-native';
 import { colors } from '@/lib/theme';
+import { ActivityIndicator, Pressable, type PressableProps, Text } from 'react-native';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
 
-type ButtonProps =Omit<PressableProps, 'children'> & {
+type ButtonProps = Omit<PressableProps, 'children'> & {
   title: string;
   variant?: Variant;
   loading?: boolean;

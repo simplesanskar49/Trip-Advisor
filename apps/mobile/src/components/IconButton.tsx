@@ -1,11 +1,11 @@
-import { Pressable, type PressableProps } from 'react-native';
+import { colors } from '@/lib/theme';
 import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps } from 'react';
-import { colors } from '@/lib/theme';
+import { Pressable, type PressableProps } from 'react-native';
 
 type IoniconName = ComponentProps<typeof Ionicons>['name'];
 
-type IconButtonProps =Omit<PressableProps, 'children' | 'style'> & {
+type IconButtonProps = Omit<PressableProps, 'children' | 'style'> & {
   name: IoniconName;
   color?: string;
   size?: number;

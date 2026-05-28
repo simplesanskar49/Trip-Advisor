@@ -9,7 +9,12 @@ export function friendlyError(err: unknown): string {
   if (m.includes('network') || m.includes('fetch') || m.includes('failed to fetch')) {
     return 'Connection problem. Check your internet and try again.';
   }
-  if (m.includes('429') || m.includes('rate_limited') || m.includes('resource_exhausted') || m.includes('quota')) {
+  if (
+    m.includes('429') ||
+    m.includes('rate_limited') ||
+    m.includes('resource_exhausted') ||
+    m.includes('quota')
+  ) {
     return "We've hit today's request limit. Please try again later.";
   }
   if (m.includes('503') || m.includes('unavailable') || m.includes('overload')) {

@@ -1,22 +1,18 @@
 import '../global.css';
-import { useEffect } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { colors } from '@/lib/theme';
 import {
-  useFonts as useFraunces,
   Fraunces_500Medium,
   Fraunces_600SemiBold,
+  useFonts as useFraunces,
 } from '@expo-google-fonts/fraunces';
-import {
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-} from '@expo-google-fonts/inter';
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { colors } from '@/lib/theme';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -44,7 +40,9 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <StatusBar style="dark" />
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+          <Stack
+            screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}
+          >
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="trip/[id]" options={{ presentation: 'card' }} />
           </Stack>

@@ -1,8 +1,8 @@
-import { Text, type TextProps } from 'react-native';
 import { serifText } from '@/lib/theme';
+import { Text, type TextProps } from 'react-native';
 
 type Size = 'lg' | 'xl' | '2xl';
-type HeadingProps =TextProps & { size?: Size };
+type HeadingProps = TextProps & { size?: Size };
 
 const sizeMap: Record<Size, number> = { lg: 24, xl: 30, '2xl': 36 };
 

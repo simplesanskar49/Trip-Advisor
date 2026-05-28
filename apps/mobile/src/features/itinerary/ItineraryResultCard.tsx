@@ -1,6 +1,3 @@
-import { View, Text } from 'react-native';
-import { Image } from 'expo-image';
-import type { Itinerary } from '@trip/schemas';
 import { Card } from '@/components/Card';
 import { Heading } from '@/components/Heading';
 import { IconButton } from '@/components/IconButton';
@@ -8,8 +5,11 @@ import { ItineraryView } from '@/features/itinerary/ItineraryView';
 import { RefineBar } from '@/features/trips/RefineBar';
 import { coverImageFor } from '@/lib/coverImage';
 import { colors } from '@/lib/theme';
+import type { Itinerary } from '@trip/schemas';
+import { Image } from 'expo-image';
+import { Text, View } from 'react-native';
 
-type ItineraryResultCardProps ={
+type ItineraryResultCardProps = {
   itinerary: Itinerary;
   saved: boolean;
   onSave: () => void;
@@ -17,7 +17,13 @@ type ItineraryResultCardProps ={
   refining: boolean;
 };
 
-export function ItineraryResultCard({ itinerary, saved, onSave, onRefine, refining }: ItineraryResultCardProps) {
+export function ItineraryResultCard({
+  itinerary,
+  saved,
+  onSave,
+  onRefine,
+  refining,
+}: ItineraryResultCardProps) {
   return (
     <View>
       <Card padded={false} className="overflow-hidden">
@@ -38,7 +44,10 @@ export function ItineraryResultCard({ itinerary, saved, onSave, onRefine, refini
           </View>
         </View>
         <View className="p-5">
-          <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}>
+          <Text
+            className="text-muted"
+            style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}
+          >
             ITINERARY
           </Text>
           <Heading size="xl" className="mt-1 mb-4">

@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Alert, BackHandler } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useMutation } from '@tanstack/react-query';
-import { router } from 'expo-router';
-import type { Itinerary } from '@trip/schemas';
-import { Heading } from '@/components/Heading';
 import { Card } from '@/components/Card';
-import { generateItinerary, refineItinerary } from '@/lib/api';
-import { useTripsStore } from '@/store/tripsStore';
-import { coverImageFor } from '@/lib/coverImage';
-import { friendlyError } from '@/lib/friendlyError';
-import { PromptForm, type PromptValues } from '@/features/plan/PromptForm';
-import { ItinerarySkeleton } from '@/features/plan/ItinerarySkeleton';
+import { Heading } from '@/components/Heading';
 import { ItineraryResultCard } from '@/features/itinerary/ItineraryResultCard';
+import { ItinerarySkeleton } from '@/features/plan/ItinerarySkeleton';
+import { PromptForm, type PromptValues } from '@/features/plan/PromptForm';
+import { generateItinerary, refineItinerary } from '@/lib/api';
+import { coverImageFor } from '@/lib/coverImage';
+import { useTripsStore } from '@/store/tripsStore';
+import { useMutation } from '@tanstack/react-query';
+import type { Itinerary } from '@trip/schemas';
+import { friendlyError } from '@trip/ui-core';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Alert, BackHandler, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PlanScreen() {
   const [result, setResult] = useState<Itinerary | null>(null);
@@ -77,14 +77,20 @@ export default function PlanScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View className="mb-5">
-          <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}>
+          <Text
+            className="text-muted"
+            style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}
+          >
             PLAN
           </Text>
           <Heading className="mt-1">Where to next?</Heading>
         </View>
 
         {!result && !generateMutation.isPending && (
-          <PromptForm loading={generateMutation.isPending} onSubmit={(v) => generateMutation.mutate(v)} />
+          <PromptForm
+            loading={generateMutation.isPending}
+            onSubmit={(v) => generateMutation.mutate(v)}
+          />
         )}
 
         {generateMutation.isPending && (

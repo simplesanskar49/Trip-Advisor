@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { View, TextInput, Text, Pressable } from 'react-native';
-import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
+import { Card } from '@/components/Card';
 import { colors, serifText } from '@/lib/theme';
+import { useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
 
 const dayOptions = [2, 3, 4, 5, 7];
 
 export type PromptValues = { destination: string; days: number; vibe: string };
 
-type PromptFormProps ={
+type PromptFormProps = {
   loading: boolean;
   onSubmit: (values: PromptValues) => void;
 };
@@ -22,7 +22,10 @@ export function PromptForm({ loading, onSubmit }: PromptFormProps) {
 
   return (
     <Card>
-      <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}>
+      <Text
+        className="text-muted"
+        style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}
+      >
         DESTINATION
       </Text>
       <TextInput
@@ -35,7 +38,10 @@ export function PromptForm({ loading, onSubmit }: PromptFormProps) {
         autoCapitalize="words"
       />
 
-      <Text className="text-muted mt-5" style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}>
+      <Text
+        className="text-muted mt-5"
+        style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}
+      >
         DAYS
       </Text>
       <View className="flex-row gap-2 mt-2">
@@ -55,7 +61,10 @@ export function PromptForm({ loading, onSubmit }: PromptFormProps) {
         ))}
       </View>
 
-      <Text className="text-muted mt-5" style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}>
+      <Text
+        className="text-muted mt-5"
+        style={{ fontFamily: 'Inter_500Medium', fontSize: 11, letterSpacing: 1.5 }}
+      >
         VIBE (OPTIONAL)
       </Text>
       <TextInput

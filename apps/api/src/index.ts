@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { itineraryRoutes } from './routes/itinerary';
 import { exploreRoutes } from './routes/explore';
+import { itineraryRoutes } from './routes/itinerary';
 import type { Bindings } from './types';
 
 const app = new Hono<{ Bindings: Bindings }>();

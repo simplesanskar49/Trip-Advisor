@@ -1,9 +1,19 @@
+import { colors } from '@/lib/theme';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
-import { colors } from '@/lib/theme';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
-type SkeletonProps ={ width?: number | string; height?: number; rounded?: number; className?: string };
+type SkeletonProps = {
+  width?: number | string;
+  height?: number;
+  rounded?: number;
+  className?: string;
+};
 
 export function Skeleton({ width = '100%', height = 16, rounded = 8, className }: SkeletonProps) {
   const opacity = useSharedValue(0.4);
@@ -18,9 +28,7 @@ export function Skeleton({ width = '100%', height = 16, rounded = 8, className }
       className={className}
       style={{ width: width as number, height, borderRadius: rounded, overflow: 'hidden' }}
     >
-      <Animated.View
-        style={[{ flex: 1, backgroundColor: colors.skeleton }, animatedStyle]}
-      />
+      <Animated.View style={[{ flex: 1, backgroundColor: colors.skeleton }, animatedStyle]} />
     </View>
   );
 }

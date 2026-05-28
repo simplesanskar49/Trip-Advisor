@@ -1,12 +1,12 @@
-import { ScrollView, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { Heading } from '@/components/Heading';
 import { Card } from '@/components/Card';
-import { useTripsStore } from '@/store/tripsStore';
+import { Heading } from '@/components/Heading';
 import { TripCard } from '@/features/trips/TripCard';
 import { serifText } from '@/lib/theme';
+import { useTripsStore } from '@/store/tripsStore';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TripsScreen() {
   const trips = useTripsStore((s) => s.trips);
@@ -21,7 +21,10 @@ export default function TripsScreen() {
         overScrollMode="never"
       >
         <View className="mb-5">
-          <Text className="text-muted" style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}>
+          <Text
+            className="text-muted"
+            style={{ fontFamily: 'Inter_500Medium', fontSize: 12, letterSpacing: 1.5 }}
+          >
             LIBRARY
           </Text>
           <Heading className="mt-1">Trips</Heading>
@@ -34,7 +37,10 @@ export default function TripsScreen() {
               <Text className="text-ink mt-3" style={serifText(20)}>
                 No trips yet
               </Text>
-              <Text className="text-muted mt-2 text-center px-6" style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+              <Text
+                className="text-muted mt-2 text-center px-6"
+                style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}
+              >
                 Head to the Plan tab to craft your first itinerary.
               </Text>
             </View>
