@@ -6,7 +6,7 @@ AI-powered travel itinerary planner. Generate, refine, and explore trips with Ge
 
 ## Try it
 
-- **Android APK:** https://expo.dev/artifacts/eas/j4HHvffDRi8eMdBgm9jV9r.apk — download, install (allow "unknown sources" if prompted), launch.
+- **Android APK:** https://expo.dev/artifacts/eas/jHgU4oWG9GtGF4Ym7axFrm.apk — download, install (allow "unknown sources" if prompted), launch.
 - **API:** https://api.trip-advisor.workers.dev — `/health` returns `{"ok":true,...}`.
 
 iOS isn't distributed (Apple requires a paid developer account). To run on iOS, clone the repo and `pnpm dev:mobile`.
