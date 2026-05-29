@@ -176,7 +176,7 @@ export default function ExploreScreen() {
         </View>
       </View>
 
-      {recsQuery.isLoading && (
+      {recsQuery.isFetching && (
         <View className="flex-1 px-5">
           <Card padded={false} className="overflow-hidden">
             <Skeleton width="100%" height={280} rounded={0} />
@@ -193,7 +193,7 @@ export default function ExploreScreen() {
         </View>
       )}
 
-      {recsQuery.isError && (
+      {!recsQuery.isFetching && recsQuery.isError && (
         <View className="flex-1 px-5 justify-center">
           <Card>
             <View className="items-center py-4">
@@ -215,7 +215,7 @@ export default function ExploreScreen() {
         </View>
       )}
 
-      {recsQuery.data && (
+      {!recsQuery.isFetching && recsQuery.data && (
         <SwipeDeck
           items={recsQuery.data.recommendations}
           onLike={(rec) =>
