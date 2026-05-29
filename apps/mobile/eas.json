@@ -10,6 +10,10 @@
     },
     "preview": {
       "distribution": "internal",
+      "channel": "preview",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.trip-advisor.workers.dev"
+      },
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
@@ -17,6 +21,10 @@
     },
     "production": {
       "autoIncrement": true,
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.trip-advisor.workers.dev"
+      },
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
