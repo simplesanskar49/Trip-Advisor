@@ -1,6 +1,6 @@
 # Trip Advisor
 
-[![CI](https://github.com/simplesanskar49/August-AI-Assignment/actions/workflows/ci.yml/badge.svg)](https://github.com/simplesanskar49/August-AI-Assignment/actions/workflows/ci.yml)
+[![CI](https://github.com/simplesanskar49/Trip-Advisor/actions/workflows/ci.yml/badge.svg)](https://github.com/simplesanskar49/Trip-Advisor/actions/workflows/ci.yml)
 
 AI-powered travel itinerary planner. Generate, refine, and explore trips with Gemini on a Cloudflare-backed Expo app.
 
